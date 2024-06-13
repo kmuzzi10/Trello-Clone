@@ -1,0 +1,233 @@
+@import url("https://fonts.googleapis.com/css2?family=Neucha&display=swap");
+
+/* Input Section */
+.input {
+  display: flex;
+  width: 95%;
+  position: relative;
+  align-items: center;
+  margin-bottom: 20px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.input__box {
+  flex: 1;
+  border-radius: 8px;
+  padding: 10px 15px;
+  font-size: 16px;
+  border: none;
+  transition: 0.3s ease-in-out;
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+.input__box:focus {
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.2);
+  outline: none;
+}
+
+.input__box:hover {
+  transform: scale(1.02);
+}
+
+.input__select {
+  margin-left: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  animation: fadeIn 0.5s ease-in-out;
+  transition: 0.3s ease-in-out;
+}
+
+.input__select:hover {
+  border-color: #888;
+  transform: scale(1.05);
+}
+
+.input__submit {
+  width: 50px;
+  height: 50px;
+  margin-left: 10px;
+  border-radius: 50%;
+  border: none;
+  font-size: 18px;
+  background-color: #4caf50;
+  color: white;
+  transition: 0.3s all ease-in-out;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  animation: bounceIn 0.5s ease-in-out;
+}
+
+.input__submit:hover {
+  background-color: #66bb6a;
+  transform: scale(1.1);
+}
+
+.input__submit:active {
+  transform: scale(0.9);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 700px) {
+  .input {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .input__box {
+    margin-bottom: 10px;
+  }
+
+  .input__submit {
+    margin-top: 10px;
+    margin-left: 0;
+  }
+}
+
+/* Container Section */
+.container {
+  width: 95%;
+  display: flex;
+  margin-top: 10px;
+  justify-content: space-between;
+  align-items: flex-start;
+  animation: slideIn 0.5s ease-in-out;
+}
+
+.todos {
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  width: 23%;
+  padding: 15px;
+  background-color: #f8f9fa;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  animation: fadeInUp 0.5s ease-in-out;
+  transition: 0.3s ease-in-out;
+}
+
+.todos:hover {
+  transform: scale(1.02);
+}
+
+.dragactive {
+  background-color: #bbdefb;
+}
+
+.dragcomplete {
+  background-color: #ffccbc;
+}
+
+.remove {
+  background-color: #ef9a9a;
+}
+
+.todos__heading {
+  font-size: 18px;
+  color: #424242;
+  margin-bottom: 10px;
+  animation: fadeInDown 0.5s ease-in-out;
+}
+
+.todos__single {
+  display: flex;
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 15px;
+  background-color: #ffffff;
+  transition: 0.3s ease-in-out;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  animation: zoomIn 0.5s ease-in-out;
+}
+
+.todos__single:hover {
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+  transform: scale(1.05);
+}
+
+.todos__single--text {
+  flex: 1;
+  padding: 5px;
+  border: none;
+  font-size: 16px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.todos__single--text:focus {
+  outline: none;
+}
+
+.icon {
+  margin-left: 10px;
+  font-size: 25px;
+  cursor: pointer;
+  color: #424242;
+  animation: fadeIn 0.5s ease-in-out;
+  transition: 0.3s ease-in-out;
+}
+
+.icon:hover {
+  color: #1e88e5;
+  transform: scale(1.2);
+}
+
+@media (max-width: 1100px) {
+  .todos {
+    width: 45%;
+  }
+}
+
+@media (max-width: 700px) {
+  .input {
+    width: 100%;
+  }
+
+  .container {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .todos {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounceIn {
+  0%, 20%, 40%, 60%, 80%, 100% {
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  0% { opacity: 0; transform: scale3d(0.3, 0.3, 0.3); }
+  20% { transform: scale3d(1.1, 1.1, 1.1); }
+  40% { transform: scale3d(0.9, 0.9, 0.9); }
+  60% { opacity: 1; transform: scale3d(1.03, 1.03, 1.03); }
+  80% { transform: scale3d(0.97, 0.97, 0.97); }
+  100% { opacity: 1; transform: scale3d(1, 1, 1); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-100%); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes zoomIn {
+  from { opacity: 0; transform: scale(0.3); }
+  to { opacity: 1; transform: scale(1); }
+}
