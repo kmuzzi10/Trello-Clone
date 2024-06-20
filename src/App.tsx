@@ -12,23 +12,18 @@ const App: React.FC = () => {
   const [completedTodos, setCompletedTodos] = useState<any[]>([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const todosFromFirebase = await fetchTodos();
+    const unsubscribe = fetchTodos((todos) => {
+      const assigned = todos.filter(todo => todo.assigned && !todo.isDone);
+      const toBeDone = todos.filter(todo => !todo.assigned && !todo.isDone);
+      const completed = todos.filter(todo => todo.isDone);
 
-        const assigned = todosFromFirebase.filter(todo => todo.assigned && !todo.isDone);
-        const toBeDone = todosFromFirebase.filter(todo => !todo.assigned && !todo.isDone);
-        const completed = todosFromFirebase.filter(todo => todo.isDone);
+      setAssignedTodos(assigned);
+      setToBeDoneTodos(toBeDone);
+      setCompletedTodos(completed);
+    });
 
-        setAssignedTodos(assigned);
-        setToBeDoneTodos(toBeDone);
-        setCompletedTodos(completed);
-      } catch (error) {
-        console.error("Error fetching todos: ", error);
-      }
-    };
-
-    fetchData();
+    // Clean up the listener on component unmount
+    return () => unsubscribe();
   }, []);
 
   const handleAdd = async (e: React.FormEvent, selectedCategory: string) => {
@@ -43,19 +38,7 @@ const App: React.FC = () => {
         };
 
         await addTodo(newTodo);
-
         setTodo("");
-
-        // Fetch updated todos and categorize them
-        const todosFromFirebase = await fetchTodos();
-
-        const assigned = todosFromFirebase.filter(todo => todo.assigned && !todo.isDone);
-        const toBeDone = todosFromFirebase.filter(todo => !todo.assigned && !todo.isDone);
-        const completed = todosFromFirebase.filter(todo => todo.isDone);
-
-        setAssignedTodos(assigned);
-        setToBeDoneTodos(toBeDone);
-        setCompletedTodos(completed);
       } catch (error) {
         console.error("Error adding todo: ", error);
       }
