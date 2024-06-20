@@ -79,6 +79,11 @@
     margin-bottom: 10px;
   }
 
+  .input__select {
+    margin-left: 0;
+    margin-bottom: 10px;
+  }
+
   .input__submit {
     margin-top: 10px;
     margin-left: 0;
