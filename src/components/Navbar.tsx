@@ -9,7 +9,8 @@ const Navbar: React.FC = () => {
     const handleLogout = async () => {
         try {
             await signOut(auth);
-            navigate('/login'); // Redirect to login page after logging out
+            alert("Logout Successfully")
+            navigate('/login');
         } catch (error) {
             console.error('Error logging out: ', error);
         }
@@ -38,7 +39,7 @@ const Navbar: React.FC = () => {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                        {/* Placeholder for future links */}
+                      
                     </ul>
                     <button onClick={handleLogout} className="btn btn-outline-danger">
                         Logout
