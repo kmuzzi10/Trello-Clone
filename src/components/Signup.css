@@ -10,6 +10,11 @@
   background-size: cover;
 }
 
+.error-message{
+  color: red;
+  text-align: left;
+}
+
 .signup-form {
   background: #fff;
   padding: 2rem;
@@ -74,6 +79,8 @@
 }
 
 .google-signin {
+  /* display: flex; */
+  /* justify-content: center; */
   align-items: center;
   margin-top: 10px;
   max-width: 100%;
@@ -85,7 +92,7 @@
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
 }
 
 .google-signin:hover {
