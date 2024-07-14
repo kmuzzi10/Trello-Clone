@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/static/css/main.b76efd63.css",
+    "main.js": "/static/js/main.b4c9965f.js",
+    "static/media/background-gradient-lights.jpg": "/static/media/background-gradient-lights.b579978f8a4e80234772.jpg",
+    "index.html": "/index.html",
+    "main.b76efd63.css.map": "/static/css/main.b76efd63.css.map",
+    "main.b4c9965f.js.map": "/static/js/main.b4c9965f.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b76efd63.css",
+    "static/js/main.b4c9965f.js"
+  ]
+}

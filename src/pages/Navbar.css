@@ -1,0 +1,23 @@
+/* Navbar.css */
+
+/* Navbar styles */
+.navbar {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Logo styles */
+.navbar-logo {
+    max-width: 200px;
+    max-height: 200px; /* Adjust the height to fit better within the navbar */
+}
+
+/* Adjust button padding and margins */
+.btn-outline-danger {
+        
+    max-width: 200px;
+    max-height: 200px;
+}
+
+.navbar-toggler-icon {
+    background-image: url('data:image/svg+xml,...'); /* Ensure the default icon is used */
+}

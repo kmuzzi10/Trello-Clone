@@ -1,0 +1,115 @@
+/* Signup.css */
+
+.signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: url('../assets/background-gradient-lights.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  
+  .error-message{
+    color: red;
+    text-align: left;
+  }
+  
+  .signup-form {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+    text-align: center; /* Center align form content */
+  }
+  
+  .signup-form h1 {
+    margin-bottom: 1.5rem;
+    color: #333;
+  }
+  
+  .trello-logo {
+    width: 80px;
+    height: auto;
+    margin-bottom: 1rem;
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .form-group label {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  
+  .signup-form input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1rem;
+  }
+  
+  .signup-form input:focus {
+    border-color: #cc00ff;
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+  
+  .signup-btn {
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    background-color: #cc00ff;
+    color: white;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .signup-btn:hover {
+    background-color: #8900b3;
+  }
+  
+  .google-signin {
+    /* display: flex; */
+    /* justify-content: center; */
+    align-items: center;
+    margin-top: 10px;
+    max-width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: #fff;
+    color: #333;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+  }
+  
+  .google-signin:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .login-link {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .login-link a {
+    color: #b700ff;
+    text-decoration: none;
+  }
+  
+  .login-link a:hover {
+    text-decoration: underline;
+  }
+  
