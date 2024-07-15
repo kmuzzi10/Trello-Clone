@@ -128,31 +128,31 @@ const Home = () => {
   const handleAddTaskClick = (sectionId) => {
     handleAddTodo(sectionId, newTaskInput[sectionId] || "");
   };
-  
+
 
   const handleDragEnd = async (result) => {
     console.log("Drag end result:", result);
-  
+
     const { destination, source, draggableId, type } = result;
-  
+
     if (!destination) {
       console.log("No destination, drag cancelled.");
       return;
     }
-  
+
     try {
       if (type === "section") {
         console.log("Handling section reordering...");
         const reorderedSections = Array.from(data);
         const [removed] = reorderedSections.splice(source.index, 1);
         reorderedSections.splice(destination.index, 0, removed);
-  
+
         console.log("Reordered sections:", reorderedSections);
-  
+
         await updateSectionOrder(
           reorderedSections.map((section) => section.id)
         );
-  
+
         console.log("Section order updated successfully!");
         setData(reorderedSections);
         toast.success("Section order updated successfully!");
@@ -160,54 +160,39 @@ const Home = () => {
         console.log("Handling todo reordering or moving...");
         const sourceSectionId = source.droppableId;
         const destinationSectionId = destination.droppableId;
-  
+
         console.log("Source Section:", sourceSectionId);
         console.log("Destination Section:", destinationSectionId);
-  
+
         const sourceSection = data.find(
           (section) => section.id === sourceSectionId
         );
         const destinationSection = data.find(
           (section) => section.id === destinationSectionId
         );
-  
+
         if (!sourceSection || !destinationSection) {
           console.error("Source or destination section not found.");
           return;
         }
-  
+
         if (sourceSectionId === destinationSectionId) {
           console.log("Reordering todos within the same section...");
-  
+        
           // Reorder todos based on drag-and-drop
           const reorderedTodos = Array.from(Object.values(sourceSection.todos || {}));
           const [removed] = reorderedTodos.splice(source.index, 1);
           reorderedTodos.splice(destination.index, 0, removed);
-  
+        
           console.log("Reordered todos:", reorderedTodos);
-  
-          // Update the order in Firebase
-          await updateTodoOrder(sourceSectionId, reorderedTodos.map(todo => todo.id));
-  
-          console.log("Todo order updated successfully!");
-  
-          // Fetch the updated section data from Firebase
-          const sectionSnapshot = await get(ref(db, `users/${getUserId()}/sections/${sourceSectionId}`));
-          const updatedSection = sectionSnapshot.val();
-  
-          // Sort todos by their order field
-          const sortedTodos = Object.values(updatedSection.todos || {})
-            .sort((a, b) => a.order - b.order);
-  
-          console.log("Sorted todos:", sortedTodos);
-  
-          // Update the state with the sorted todos
-          setData((prevData) => 
+        
+          // Optimistically update the state with the reordered todos
+          setData((prevData) =>
             prevData.map((section) =>
               section.id === sourceSectionId
                 ? {
                     ...section,
-                    todos: sortedTodos.reduce((acc, todo) => {
+                    todos: reorderedTodos.reduce((acc, todo) => {
                       acc[todo.id] = todo;
                       return acc;
                     }, {}),
@@ -215,21 +200,49 @@ const Home = () => {
                 : section
             )
           );
-  
-          console.log("Data updated with sorted todos:", data);
-          toast.success("Todo order updated successfully!");
-        } else {
+        
+          // Update the order in Firebase
+          try {
+            await updateTodoOrder(sourceSectionId, reorderedTodos.map(todo => todo.id));
+            console.log("Todo order updated successfully!");
+            toast.success("Todo order updated successfully!");
+          } catch (error) {
+            console.error("Error updating todo order:", error);
+            toast.error("Failed to update todo order. Please try again.");
+            
+            // Optionally, fetch the latest data from Firebase to reset the state
+            const sectionSnapshot = await get(ref(db, `users/${getUserId()}/sections/${sourceSectionId}`));
+            const updatedSection = sectionSnapshot.val();
+            const sortedTodos = Object.values(updatedSection.todos || {}).sort((a, b) => a.order - b.order);
+        
+            setData((prevData) =>
+              prevData.map((section) =>
+                section.id === sourceSectionId
+                  ? {
+                      ...section,
+                      todos: sortedTodos.reduce((acc, todo) => {
+                        acc[todo.id] = todo;
+                        return acc;
+                      }, {}),
+                    }
+                  : section
+              )
+            );
+          }
+        }
+        
+        else {
           console.log("Handling todo moving...");
-  
+
           // Extract the todo being dragged
           const { [draggableId]: removedTodo, ...newSourceTodos } = sourceSection.todos || {};
           console.log("Drag ID:", draggableId);
-  
+
           if (!removedTodo) {
             console.error("Todo not found in source section.");
             return;
           }
-  
+
           // Update IDs in the source section
           const updatedSourceTodos = Object.keys(newSourceTodos).reduce((acc, id) => {
             const todo = newSourceTodos[id];
@@ -238,54 +251,54 @@ const Home = () => {
               : todo;
             return acc;
           }, {});
-  
+
           // Get the current todos in the destination section
           const destinationTodos = destinationSection.todos || {};
-  
+
           // Determine the new order for the moved todo
           const highestOrder = Object.values(destinationTodos).reduce(
             (maxOrder, todo) => Math.max(maxOrder, todo.order),
             -1
           );
           let newOrder = highestOrder + 1;
-  
+
           // Ensure the newTodoId is unique
           let newTodoId = `${newOrder}`;
           while (destinationTodos[newTodoId]) {
             newOrder += 1;
             newTodoId = `${newOrder}`;
           }
-  
+
           // Prepare the todo data to be added to the destination section
           const newTodoData = {
             ...removedTodo,
             order: newOrder,
             id: newTodoId
           };
-  
+
           // Add the moved todo to the destination section
           const newDestinationTodos = {
             ...destinationTodos,
             [newTodoId]: newTodoData
           };
 
-          window.location.reload()
-  
+
           console.log("Updated Source Todos:", updatedSourceTodos);
           console.log("New Destination Todos:", newDestinationTodos);
-  
+          window.location.reload()
+
           // Optimistically update local state immediately
           setData((prevData) => {
             const updatedData = prevData.map((section) =>
               section.id === sourceSectionId
                 ? { ...section, todos: updatedSourceTodos }
                 : section.id === destinationSectionId
-                ? { ...section, todos: newDestinationTodos }
-                : section
+                  ? { ...section, todos: newDestinationTodos }
+                  : section
             );
             return updatedData;
           });
-  
+
           try {
             // Firebase updates
             const sourceUpdates = {};
@@ -293,14 +306,14 @@ const Home = () => {
               sourceUpdates[`users/${getUserId()}/sections/${sourceSectionId}/todos/${id}`] = updatedSourceTodos[id];
             });
             sourceUpdates[`users/${getUserId()}/sections/${sourceSectionId}/todos/${draggableId}`] = null;
-  
+
             const destinationUpdates = {
               [`users/${getUserId()}/sections/${destinationSectionId}/todos/${newTodoId}`]: newTodoData
             };
-  
+
             // Perform Firebase update
             await update(ref(db), { ...sourceUpdates, ...destinationUpdates });
-  
+
             console.log("Todo moved and orders updated successfully!");
           } catch (error) {
             console.error("Error moving todo:", error);
@@ -313,8 +326,8 @@ const Home = () => {
       toast.error("Error updating order. Please try again.");
     }
   };
-  
-  
+
+
 
 
   return (
